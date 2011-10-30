@@ -6,6 +6,7 @@ Game::Game()
     running = true;
     SDL_Init(SDL_INIT_EVERYTHING);
     screen = SDL_SetVideoMode(800,600,32,SDL_DOUBLEBUF);
+    FPS = 60;
     SDL_ShowCursor(0); // don't show cursor since the game will be controlled by it
 
     TTF_Init(); // initialize ttf
@@ -114,10 +115,10 @@ void Game::loop()
         text = TTF_RenderText_Solid(font,log.c_str(),font_color); // this returns a surface
         SDL_BlitSurface(text,NULL,screen,NULL); // blit the text onto the screen
         SDL_FreeSurface(text);
-        SDL_Flip(screen);        // regulate the fps
-        //if(1000/FPS > SDL_GetTicks() - start) // if frame to less than 1/60th of a second when fps = 60
-        //{
-        //    SDL_Delay(1000/FPS-(SDL_GetTicks()-start)); // delay it by the difference between 1/60th and how long it took
-        //}
+        SDL_Flip(screen);
+        if(1000/FPS>(SDL_GetTicks() - start)) // if frame to less than 1/60th of a second when fps = 60
+        {
+            SDL_Delay(1000/FPS-(SDL_GetTicks()-start)); // delay it by the difference between 1/60th and how long it took
+        }
     }
 }
