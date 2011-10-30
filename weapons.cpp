@@ -1,12 +1,3 @@
-/*
- *  weapons.cpp
- *  Shooter
- *
- *  Created by David Albornoz on 10/29/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
- *
- */
-
 #include "weapons.h"
 
 Pistol::Pistol(SDL_Surface *screen)
@@ -31,7 +22,7 @@ void Pistol::shoot(int x, int y)
 }
 void Pistol::draw()
 {
-	for(int i=0;i<bullets.size();i++)
+	for(int i=0;i<(int)bullets.size();i++)
 	{
 		SDL_FillRect(screen_surface, &bullets[i], color);
 		bullets[i].x += 10;

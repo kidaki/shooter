@@ -1,12 +1,3 @@
-/*
- *  characters.cpp
- *  Shooter
- *
- *  Created by David Albornoz on 10/29/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
- *
- */
-
 #include "characters.h"
 
 Player::Player(SDL_Surface *screen,int x, int y)
@@ -64,7 +55,7 @@ void Player::check_bounds()
 	{
 		player_rect.y = screen_rect.h - player_rect.h;
 	}
-	//check if player is left of right of screen 
+	//check if player is left of right of screen
 	if(player_rect.x + player_rect.w > screen_rect.w)
 	{
 		player_rect.x = screen_rect.w - player_rect.w;

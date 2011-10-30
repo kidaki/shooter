@@ -1,16 +1,9 @@
-/*
- *  weapons.h
- *  Shooter
- *
- *  Created by David Albornoz on 10/29/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
- *
- */
 #ifndef WEAPONS_H
 #define WEAPONS_H
 
 #include <SDL/SDL.h>
 #include <vector>
+#include <iostream>
 class Pistol
 {
 	std::vector<SDL_Rect> bullets;

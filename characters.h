@@ -1,16 +1,9 @@
-/*
- *  characters.h
- *  Shooter
- *
- *  Created by David Albornoz on 10/29/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
- *
- */
-
 #ifndef CHARACTERS_H
 #define CHARACTERS_H
 
-#include <weapons.h>
+#include "weapons.h"
+#include <SDL/SDL.h>
+#include <iostream>
 
 class Player
 {
