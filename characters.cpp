@@ -10,7 +10,7 @@ Player::Player(SDL_Surface *screen,int x, int y)
 	weapon = weapons[0]; // assign weapons[0] as main weapon
 	weapon->equiped = true; // equip first weapon
 	color = SDL_MapRGB(screen->format, 0x33, 0x66, 0x33);
-	player_surface = IMG_Load("12px-blue-arrow.png");
+	player_surface = IMG_Load("player.png");
 	player_rect.x = x;
 	player_rect.y = y;
 	player_rect.w = 50;
