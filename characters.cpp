@@ -4,8 +4,13 @@ Player::Player(SDL_Surface *screen,int x, int y)
 {
 	this->screen_surface = screen;
 	SDL_GetClipRect(screen, &screen_rect);
-	pistol = new Pistol(screen);
+	number_of_weapons = 2;
+	weapons.push_back(new Pistol(screen));
+	weapons.push_back(new Beam(screen));
+	weapon = weapons[0]; // assign weapons[0] as main weapon
+	weapon->equiped = true; // equip first weapon
 	color = SDL_MapRGB(screen->format, 0x33, 0x66, 0x33);
+	player_surface = IMG_Load("12px-blue-arrow.png");
 	player_rect.x = x;
 	player_rect.y = y;
 	player_rect.w = 50;
@@ -13,7 +18,11 @@ Player::Player(SDL_Surface *screen,int x, int y)
 }
 Player::~Player()
 {
-	delete pistol;
+	for(int i=0;i<number_of_weapons;i++)
+	{
+		delete weapons[i];
+	}
+	SDL_FreeSurface(player_surface);
 }
 void Player::move_up()
 {
@@ -38,11 +47,25 @@ void Player::move_to(int x, int y)
 }
 void Player::shoot()
 {
-	pistol->shoot(player_rect.x,player_rect.y);
+	weapon->shoot(player_rect.x,player_rect.y);
+	//weapons[0]->shoot(player_rect.x,player_rect.y);
+}
+void Player::equip_next()
+{
+	for(int i=0;i<number_of_weapons;i++)
+	{
+		if(weapons[i]->equiped) // switch out weapons
+		{
+			weapon->equiped = false;
+			weapon = weapons[(i+1)%number_of_weapons];
+			weapon->equiped = true;
+			break;
+		}
+	}
 }
 int Player::ammo_count()
 {
-	return pistol->how_many_bullets();
+	return weapon->how_many_bullets();
 }
 void Player::check_bounds()
 {
@@ -68,6 +91,12 @@ void Player::check_bounds()
 void Player::draw()
 {
 	check_bounds();
-	SDL_FillRect(screen_surface, &player_rect, color);
-	pistol->draw();
+	for(int i=0;i<number_of_weapons;i++)
+	{
+		weapons[i]->draw();
+	}
+	//SDL_FillRect(screen_surface, &player_rect, color);
+	SDL_BlitSurface(player_surface,NULL,screen_surface,&player_rect);
 }
+Enemy::Enemy(SDL_Surface *screen, int x, int y) : Player(screen,x,y){}
+	

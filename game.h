@@ -14,7 +14,8 @@ class Game
     bool running;
     Uint32 start;
     int FPS;
-    int movement[4];
+    bool movement[4];
+	bool shooting;
     Player *player;
     TTF_Font *font;
     SDL_Color font_color;

@@ -8,6 +8,11 @@ Game::Game()
     screen = SDL_SetVideoMode(800,600,32,SDL_DOUBLEBUF);
     FPS = 60;
     SDL_ShowCursor(0); // don't show cursor since the game will be controlled by it
+	movement[0] = 0;
+	movement[1] = 0;
+	movement[2] = 0;
+	movement[3] = 0;
+	shooting = 0;
 
     TTF_Init(); // initialize ttf
     font = TTF_OpenFont("font.ttf",28); // open the font
@@ -16,7 +21,7 @@ Game::Game()
     font_color.g = 0xff;
     font_color.b = 0xff;
 
-    player = new Player(screen,0,0);
+    player = new Player(screen,10,10);
 }
 Game::~Game()
 {
@@ -37,8 +42,11 @@ void Game::handle_event()
             player->move_to(event.motion.x,event.motion.y);
             break;
         case SDL_MOUSEBUTTONDOWN:
-            player->shoot();
+            shooting = 1;
             break;
+		case SDL_MOUSEBUTTONUP:
+			shooting = 0;
+			break;
         case SDL_KEYDOWN:
             switch(event.key.keysym.sym)
             {
@@ -54,6 +62,9 @@ void Game::handle_event()
                 case SDLK_RIGHT:
                     movement[3] = 1;
                     break;
+				case SDLK_TAB:
+					player->equip_next();
+					break;
             }
             break;
         case SDL_KEYUP:
@@ -101,6 +112,10 @@ void Game::loop()
         {
             player->move_right();
         }
+		if(shooting)
+		{
+			player->shoot();
+		}
         //////////// this is just debugging stuff, since I didn't have a console on the sdl xcode project
         //first empty out the stringstream
         tmp.str(std::string());
