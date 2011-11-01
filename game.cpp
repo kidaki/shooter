@@ -5,7 +5,7 @@ Game::Game()
     //init game
     running = true;
     SDL_Init(SDL_INIT_EVERYTHING);
-    screen = SDL_SetVideoMode(800,600,32,SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(800,600,32,SDL_SWSURFACE | SDL_DOUBLEBUF);
     FPS = 60;
     SDL_ShowCursor(0); // don't show cursor since the game will be controlled by it
 	movement[0] = 0;
@@ -21,7 +21,8 @@ Game::Game()
     font_color.g = 0xff;
     font_color.b = 0xff;
 
-    player = new Player(screen,10,10);
+    player = new Player(screen,"player.png");
+	//enemy
 }
 Game::~Game()
 {
@@ -131,9 +132,10 @@ void Game::loop()
         SDL_BlitSurface(text,NULL,screen,NULL); // blit the text onto the screen
         SDL_FreeSurface(text);
         SDL_Flip(screen);
-        if(1000/FPS>(SDL_GetTicks() - start)) // if frame to less than 1/60th of a second when fps = 60
-        {
-            SDL_Delay(1000/FPS-(SDL_GetTicks()-start)); // delay it by the difference between 1/60th and how long it took
-        }
+        //if(1000/FPS>(SDL_GetTicks() - start)) // if frame to less than 1/60th of a second when fps = 60
+        //{
+        //    SDL_Delay(1000/FPS-(SDL_GetTicks()-start)); // delay it by the difference between 1/60th and how long it took
+        //}
+		SDL_Delay(1);
     }
 }

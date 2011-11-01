@@ -1,20 +1,50 @@
 #include "characters.h"
 
-Player::Player(SDL_Surface *screen,int x, int y)
+Character::Character(SDL_Surface *screen, const char* image_file)
 {
-	this->screen_surface = screen;
-	SDL_GetClipRect(screen, &screen_rect);
+	screen_surface = screen;
+	character_surface = IMG_Load(image_file);
+	screen_rect = screen_surface->clip_rect;
+	character_rect = character_surface -> clip_rect;
+	character_rect.x = 300;
+	character_rect.y = 300;
+}
+Character::~Character()
+{
+	SDL_FreeSurface(character_surface);
+}
+
+void Character::move_up()
+{
+	character_rect.y -= 10;
+}
+void Character::move_down()
+{
+	character_rect.y += 10;
+}
+void Character::move_right()
+{
+	character_rect.x += 10;
+}
+void Character::move_left()
+{
+	character_rect.x -= 10;
+}
+void Character::move_to(int x, int y)
+{
+	character_rect.x = x;
+	character_rect.y = y;
+}
+void Character::draw(){}
+
+Player::Player(SDL_Surface *screen,const char* image_file): 
+Character(screen,image_file)
+{
 	number_of_weapons = 2;
 	weapons.push_back(new Pistol(screen));
 	weapons.push_back(new Beam(screen));
 	weapon = weapons[0]; // assign weapons[0] as main weapon
 	weapon->equiped = true; // equip first weapon
-	color = SDL_MapRGB(screen->format, 0x33, 0x66, 0x33);
-	player_surface = IMG_Load("player.png");
-	player_rect.x = x;
-	player_rect.y = y;
-	player_rect.w = 50;
-	player_rect.h = 50;
 }
 Player::~Player()
 {
@@ -22,33 +52,10 @@ Player::~Player()
 	{
 		delete weapons[i];
 	}
-	SDL_FreeSurface(player_surface);
-}
-void Player::move_up()
-{
-	player_rect.y -= 10;
-}
-void Player::move_down()
-{
-	player_rect.y += 10;
-}
-void Player::move_right()
-{
-	player_rect.x += 10;
-}
-void Player::move_left()
-{
-	player_rect.x -= 10;
-}
-void Player::move_to(int x, int y)
-{
-	player_rect.x = x;
-	player_rect.y = y;
 }
 void Player::shoot()
 {
-	weapon->shoot(player_rect.x,player_rect.y);
-	//weapons[0]->shoot(player_rect.x,player_rect.y);
+	weapon->shoot(character_rect.x,character_rect.y);
 }
 void Player::equip_next()
 {
@@ -70,22 +77,22 @@ int Player::ammo_count()
 void Player::check_bounds()
 {
 	// check if player if above or below screen
-	if(player_rect.y < 0)
+	if(character_rect.y < 0)
 	{
-		player_rect.y = 0;
+		character_rect.y = 0;
 	}
-	else if(player_rect.y+player_rect.h > screen_rect.h)
+	else if(character_rect.y+character_rect.h > screen_rect.h)
 	{
-		player_rect.y = screen_rect.h - player_rect.h;
+		character_rect.y = screen_rect.h - character_rect.h;
 	}
 	//check if player is left of right of screen
-	if(player_rect.x + player_rect.w > screen_rect.w)
+	if(character_rect.x + character_rect.w > screen_rect.w)
 	{
-		player_rect.x = screen_rect.w - player_rect.w;
+		character_rect.x = screen_rect.w - character_rect.w;
 	}
-	else if(player_rect.x < 0)
+	else if(character_rect.x < 0)
 	{
-		player_rect.x = 0;
+		character_rect.x = 0;
 	}
 }
 void Player::draw()
@@ -96,7 +103,13 @@ void Player::draw()
 		weapons[i]->draw();
 	}
 	//SDL_FillRect(screen_surface, &player_rect, color);
-	SDL_BlitSurface(player_surface,NULL,screen_surface,&player_rect);
+	SDL_BlitSurface(character_surface,NULL,screen_surface,&character_rect);
 }
-Enemy::Enemy(SDL_Surface *screen, int x, int y) : Player(screen,x,y){}
+Enemy::Enemy(SDL_Surface *screen, const char* image_file) : 
+Character(screen,image_file)
+{
+	
+}
+Enemy::~Enemy(){}
+void Enemy::draw(){}
 	

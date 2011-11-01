@@ -7,22 +7,28 @@
 #include <iostream>
 #include <vector>
 
-class Player
+class Character
 {
 public:
-	SDL_Surface *screen_surface,*player_surface;
-	SDL_Rect player_rect,screen_rect;
+	SDL_Surface *screen_surface,*character_surface;
+	SDL_Rect character_rect,screen_rect;
+	Character(SDL_Surface *screen,const char* image_file);
+	~Character();
+	void move_up();
+	void move_down();
+	void move_left();
+	void move_right();
+	void move_to(int x, int y);
+	virtual void draw();
+};
+class Player : public Character
+{
+public:
 	Weapon* weapon;
 	int number_of_weapons;
 	std::vector<Weapon*> weapons;
-	Uint32 color;
-	Player(SDL_Surface * screen,int x, int y);
+	Player(SDL_Surface * screen,const char* image_file);
 	~Player();
-	void move_up();
-	void move_down();
-	void move_right();
-	void move_left();
-	void move_to(int x, int y);
 	void shoot();
 	void equip_next();
 	int ammo_count();
@@ -30,11 +36,12 @@ public:
 	void draw();
 };
 
-class Enemy: public Player
+class Enemy: public Character
 {
 public:
-	Enemy(SDL_Surface *screen, int x, int y);
+	Enemy(SDL_Surface *screen,const char* image_file);
 	~Enemy();
+	void draw();
 };
 
 #endif
