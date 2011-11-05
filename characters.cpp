@@ -35,14 +35,14 @@ void Character::move_to(int x, int y)
 	character_rect.x = x;
 	character_rect.y = y;
 }
-void Character::draw(){}
 
 Player::Player(SDL_Surface *screen,const char* image_file): 
 Character(screen,image_file)
 {
-	number_of_weapons = 2;
+	number_of_weapons = 3;
 	weapons.push_back(new Pistol(screen));
 	weapons.push_back(new Beam(screen));
+	weapons.push_back(new TriPistol(screen));
 	weapon = weapons[0]; // assign weapons[0] as main weapon
 	weapon->equiped = true; // equip first weapon
 }
@@ -55,7 +55,7 @@ Player::~Player()
 }
 void Player::shoot()
 {
-	weapon->shoot(character_rect.x,character_rect.y);
+	weapon->shoot(character_rect.x,character_rect.y,1);
 }
 void Player::equip_next()
 {
@@ -95,21 +95,49 @@ void Player::check_bounds()
 		character_rect.x = 0;
 	}
 }
-void Player::draw()
+void Player::draw(bool game_over)
 {
-	check_bounds();
-	for(int i=0;i<number_of_weapons;i++)
+	if(!game_over)
 	{
-		weapons[i]->draw();
+		check_bounds();
+		for(int i=0;i<number_of_weapons;i++)
+		{
+			weapons[i]->draw(); // draws the bullets of all the guns
+		}
+		//SDL_FillRect(screen_surface, &player_rect, color);
+		SDL_BlitSurface(character_surface,NULL,screen_surface,&character_rect);
 	}
-	//SDL_FillRect(screen_surface, &player_rect, color);
-	SDL_BlitSurface(character_surface,NULL,screen_surface,&character_rect);
+	else
+	{
+		// draw the explosion sequence
+		
+		
+	}
 }
-Enemy::Enemy(SDL_Surface *screen, const char* image_file) : 
+Enemy::Enemy(int x, int y, SDL_Surface *screen, const char* image_file) : 
 Character(screen,image_file)
 {
-	
+	pause = 0;
+	character_rect.x = x;
+	character_rect.y = y;
+	weapon = new TriPistol(screen);
 }
-Enemy::~Enemy(){}
-void Enemy::draw(){}
+Enemy::~Enemy()
+{
+	delete weapon;
+}
+void Enemy::shoot()
+{
+	if(0 < pause % 105 and pause % 105 < 30)
+	{
+		weapon->shoot(character_rect.x,character_rect.y,-1);
+	}
+	pause ++;
+	if(pause==105){pause=0;}
+}
+void Enemy::draw(bool game_over)
+{
+	SDL_BlitSurface(character_surface,NULL,screen_surface,&character_rect);
+	weapon->draw();
+}
 	

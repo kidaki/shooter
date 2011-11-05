@@ -19,7 +19,7 @@ public:
 	void move_left();
 	void move_right();
 	void move_to(int x, int y);
-	virtual void draw();
+	virtual void draw(bool game_over)=0;
 };
 class Player : public Character
 {
@@ -33,15 +33,18 @@ public:
 	void equip_next();
 	int ammo_count();
 	void check_bounds();
-	void draw();
+	void draw(bool game_over);
 };
 
 class Enemy: public Character
 {
 public:
-	Enemy(SDL_Surface *screen,const char* image_file);
+	Weapon *weapon;
+	int pause;
+	Enemy(int x, int y, SDL_Surface *screen,const char* image_file);
 	~Enemy();
-	void draw();
+	void shoot();
+	void draw(bool game_over);
 };
 
 #endif
