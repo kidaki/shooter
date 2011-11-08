@@ -14,7 +14,7 @@ class Game
     SDL_Event event;
     bool running;
 	bool game_over;
-	int time_running;
+	float time_running;
     float start;
     int FPS;
     bool movement[4];
@@ -32,5 +32,28 @@ class Game
     void handle_event();
 	bool check_collisions(SDL_Rect rect1, SDL_Rect rect2);
     void loop();
+};
+class Level
+{
+public:
+	typedef struct level_enemy {
+		Enemy *enemy;
+		float time;
+	};
+	std::vector<level_enemy> level_enemies;
+	int number,enemy_number;
+	int enemy_count;
+	float time_passed;
+	SDL_Surface *screen;
+	Level(int num,SDL_Surface *screen);
+	~Level();
+	void virtual init() = 0;
+	
+};
+class Level1:public Level
+{
+public:
+	Level1(SDL_Surface *screen);
+	void init();
 };
 #endif

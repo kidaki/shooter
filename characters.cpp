@@ -128,12 +128,15 @@ Enemy::~Enemy()
 }
 void Enemy::shoot()
 {
-	if(0 < pause % 105 and pause % 105 < 30)
+	if(weapon->bullets.size() % 15 == 0 and pause != 105)
+	{
+		pause++;
+	}
+	else
 	{
 		weapon->shoot(character_rect.x,character_rect.y,-1);
+		pause = 0;
 	}
-	pause ++;
-	if(pause==105){pause=0;}
 }
 void Enemy::draw(bool game_over)
 {

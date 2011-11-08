@@ -72,7 +72,7 @@ void TriPistol::shoot(int x, int y, int x_dir)
 	Bullet bullet3 = {bullet_rect,x,x_dir,-1};
 	if(bullets.size() >= 1)
 	{
-		if(abs(bullets.back().bullet.x - bullets.back().start_x) >= 26)
+		if(abs(bullets.back().bullet.x - bullets.back().start_x) >= 52)
 		{
 			bullets.push_back(bullet1);
 			bullets.push_back(bullet2);
